@@ -37,7 +37,7 @@ void send_response(int fd, char *file_content) {
 int get_file_content(char *buff, char *path) {
     if(strcmp(path, "/") == 0) path = "/index.html";
     FILE *fp;
-    char formatted_path[200] = "./html";
+    char formatted_path[200] = "./public";
     strcat(formatted_path, path);
     printf("%s\n", formatted_path);
     if((fp = fopen(formatted_path, "r")) == NULL) {
