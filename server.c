@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <string.h>
-#include <stdbool.h>
+#include <errno.h>
 
 #define LISTEN_BACKLOG 5
 
@@ -39,6 +39,7 @@ int get_file_content(char *buff, char *path) {
     FILE *fp;
     char formatted_path[200] = "./html";
     strcat(formatted_path, path);
+    printf("%s\n", formatted_path);
     if((fp = fopen(formatted_path, "r")) == NULL) {
         return -1;
     }
@@ -54,7 +55,6 @@ int get_file_content(char *buff, char *path) {
 
     fread(buff, 1, length, fp);
     fclose(fp);
-    printf("ok\n");
 
     return 0;
 }
@@ -141,15 +141,14 @@ int main(int argc, char *argv[]) {
         char *method = tokens[0];
         char *path = tokens[1];
         
-        char file_content[65536];
+        char file_content[65536] = {0};
+        printf("%s\n", file_content);
         if(get_file_content(file_content, path) < 0) {
-            perror("get_file_content");
-            close(ns);
-            continue;
+            printf("[%s] %s:%d %s %s - %s\n", get_current_time(), inet_ntoa(client.sin_addr), ntohs(client.sin_port), method, path, strerror(errno));
+        } else {
+            printf("[%s] %s:%d %s %s\n", get_current_time(), inet_ntoa(client.sin_addr), ntohs(client.sin_port), method, path);
+            send_response(ns, file_content);
         }
-
-        printf("[%s] %s:%d \n", get_current_time(), inet_ntoa(client.sin_addr), ntohs(client.sin_port));
-        send_response(ns, file_content);
 
         printf("[%s] %s:%d Closed\n", get_current_time(), inet_ntoa(client.sin_addr), ntohs(client.sin_port));
         close(ns);
