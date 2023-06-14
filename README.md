@@ -5,15 +5,19 @@
 To run the server on localhost:8000 
 
 ```bash
-    make run 
-    #or just
-    make
+make run 
+```
+
+Or just
+
+```bash
+make
 ```
 
 Build server.c
 
 ```bash
-    make build
+make build
 ```
 
 Run the server on a custom port
