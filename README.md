@@ -28,9 +28,10 @@ Run the server on a custom port
 
 ## TODO:
 
-- Adiconar a possibilidade de definir o endereço IP.
-- Refatorar o código usando mais constantes.
-- Adicionar cores para a saída do servidor.
-- Lidar com outro tipos de arquivo, ex. js e css
-- Adicionar resposta 404.
-- Corrigir eventuais bugs.
+- [ ] Adiconar a possibilidade de definir o endereço IP.
+- [ ] Refatorar o código usando mais constantes.
+- [ ] Adicionar cores para a saída do servidor.
+- [ ] Lidar com outro tipos de arquivo, ex. js e css
+- [ ] Adicionar resposta 404.
+- [ ] Corrigir eventuais bugs.
+- [ ] Adicionar novos arquivos html.
