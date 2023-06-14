@@ -11,20 +11,17 @@
 #include <errno.h>
 
 #define LISTEN_BACKLOG 5
+#define BUFF_SIZE 65536 // 64k
 
 // About TCP (from tcp man page):
 // TCP guarantees that the data arrives in order and retransmits lost packets.  It generates  and
 // checks a per-packet checksum to catch transmission errors.  TCP does not preserve record boundaries.
 
 void send_response(int fd, char *file_content) {
-    const int header_size = 100;
-    const long int file_content_size = strlen(file_content);
-    const long int response_buf_size = header_size + file_content_size;
-    
-    char header[header_size];
-    sprintf(header, "HTTP/1.1 200 OK\nContent-Type:text/html\nContent-Length: %ld\n\n", file_content_size);
+    char header[100] = {0};
+    sprintf(header, "HTTP/1.1 200 OK\nContent-Type:text/html\nContent-Length: %ld\n\n", strlen(file_content));
 
-    char response[response_buf_size];
+    char response[BUFF_SIZE] = {0};
     strcat(response, header);
     strcat(response, file_content);
 
@@ -59,10 +56,6 @@ int get_file_content(char *buff, char *path) {
     return 0;
 }
 
-void handle_http_request() {
-    
-}
-
 char *get_current_time() {
     time_t curr_time = time(NULL);
     return strtok(ctime(&curr_time), "\n");
@@ -77,7 +70,6 @@ int main(int argc, char *argv[]) {
     int tcp_socket;                     // socket
     int ns;                             // socket connected to client
     int namelen;                        // length og client name 
-    char buff[100];                     // buffer for sending and receiving data
 
 
     // Check arguments. Should be only one, the port number.
@@ -124,9 +116,8 @@ int main(int argc, char *argv[]) {
 
         // Successful connection
         printf("[%s] %s:%d Accepted\n", get_current_time(), inet_ntoa(client.sin_addr), ntohs(client.sin_port));
-        const int request_buf_size = 65536; // 64k
-        char request[request_buf_size];
-        if(recv(ns, request, request_buf_size, 0) < 0) {
+        char request[BUFF_SIZE] = {0};
+        if(recv(ns, request, sizeof(request), 0) < 0) {
             perror("recv");
         }
 
@@ -141,7 +132,7 @@ int main(int argc, char *argv[]) {
         char *method = tokens[0];
         char *path = tokens[1];
         
-        char file_content[65536] = {0};
+        char file_content[BUFF_SIZE] = {0};
         if(get_file_content(file_content, path) < 0) {
             printf("[%s] %s:%d %s %s - %s\n", get_current_time(), inet_ntoa(client.sin_addr), ntohs(client.sin_port), method, path, strerror(errno));
         } else {
