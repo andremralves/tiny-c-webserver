@@ -1,8 +1,5 @@
-run: build
-	./server 8000
-
 build:
-	gcc server.c -o server
+	gcc -Wall -Wextra server.c -o server
 
 clean:
 	rm server

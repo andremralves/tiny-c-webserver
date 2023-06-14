@@ -70,16 +70,18 @@ int main(int argc, char *argv[]) {
     int tcp_socket;                     // socket
     int ns;                             // socket connected to client
     int namelen;                        // length og client name 
+    char server_addr[20];
 
 
-    // Check arguments. Should be only one, the port number.
-    if(argc != 2) {
-        fprintf(stderr, "Usage: %s port\n", argv[0]);
+    // Check arguments. Should be two, the addr and the port number.
+    if(argc != 3) {
+        fprintf(stderr, "Usage: %s addr port\n", argv[0]);
         exit(1);
     }
 
     // Pass the first argument to be the port number.
-    port = (unsigned short) atoi(argv[1]);
+    port = (unsigned short) atoi(argv[2]);
+    strcpy(server_addr, argv[1]);
 
     // Create the socket.
     if((tcp_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
@@ -89,7 +91,7 @@ int main(int argc, char *argv[]) {
 
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
-    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_addr.s_addr = inet_addr(server_addr);
 
     // Bind the socket to the server address
     // Traditionally, this  operation  is  called “assigning a name to a socket”. bind(2)

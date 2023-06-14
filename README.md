@@ -4,31 +4,27 @@
 
 To run the server on localhost:8000 
 
-```bash
-make run 
-```
-
-Or just
-
-```bash
-make
-```
-
 Build server.c
 
 ```bash
 make build
 ```
 
-Run the server on a custom port
+or just
 
 ```bash
-    ./server 5001
+make
+```
+
+Run the server on a custom addr and port
+
+```bash
+    ./server <your-ip-addr> <port>
 ```
 
 ## TODO:
 
-- [ ] Adiconar a possibilidade de definir o endereço IP.
+- [x] Adiconar a possibilidade de definir o endereço IP.
 - [ ] Refatorar o código usando mais constantes.
 - [ ] Adicionar cores para a saída do servidor.
 - [ ] Lidar com outro tipos de arquivo, ex. js e css
