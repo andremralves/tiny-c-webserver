@@ -39,7 +39,7 @@ int get_file_content(char *buff, char *path) {
     FILE *fp;
     char formatted_path[200] = "./public";
     strcat(formatted_path, path);
-    printf("%s\n", formatted_path);
+    //printf("%s\n", formatted_path);
     if((fp = fopen(formatted_path, "r")) == NULL) {
         return -1;
     }
@@ -142,7 +142,6 @@ int main(int argc, char *argv[]) {
         char *path = tokens[1];
         
         char file_content[65536] = {0};
-        printf("%s\n", file_content);
         if(get_file_content(file_content, path) < 0) {
             printf("[%s] %s:%d %s %s - %s\n", get_current_time(), inet_ntoa(client.sin_addr), ntohs(client.sin_port), method, path, strerror(errno));
         } else {
